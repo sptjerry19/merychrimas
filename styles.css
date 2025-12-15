@@ -72,15 +72,53 @@ body {
   }
 }
 
-/* Cây thông Noel */
+/* Font cho SVG tree */
+@font-face {
+  font-family: 'mountains_of_christmasregular';
+  src: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/35984/mountainsofchristmas-webfont.woff2') format('woff2'),
+       url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/35984/mountainsofchristmas-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Cây thông Noel SVG */
 .tree-container {
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   height: 700px;
   margin: 50px 0;
   padding: 0 50px;
+}
+
+.tree-container .mainSVG {
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  visibility: visible;
+  position: relative;
+  z-index: 1;
+}
+
+.tree-container .mainSVG svg {
+  width: 100%;
+  height: auto;
+}
+
+.sparkle {
+  /* mix-blend-mode:luminosity */
+}
+
+#endMessage {
+  font-family: mountains_of_christmasregular;
+  font-size: 2rem;
+  text-anchor: middle;
+  text-align: center;
+  fill: #FFFFFF;
+  color: #FFFFFF;
+  opacity: 0;
+  letter-spacing: 1px;
 }
 
 .tree {
@@ -198,13 +236,14 @@ body {
   border-radius: 0 0 15px 15px;
 }
 
-/* Hộp quà */
+/* Hộp quà - Điều chỉnh vị trí cho SVG tree */
 .gift {
   position: absolute;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  z-index: 5;
+  z-index: 10;
   animation: gift-float 3s ease-in-out infinite;
+  pointer-events: auto;
 }
 
 .gift:hover {
@@ -239,36 +278,36 @@ body {
 
 .gift-1 .gift-box {
   background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 50%, #ff5252 100%);
-  top: 220px;
-  left: -120px;
+  top: 350px;
+  left: 150px;
   animation-delay: 0s;
 }
 
 .gift-2 .gift-box {
   background: linear-gradient(135deg, #4ecdc4 0%, #6eddd6 50%, #26a69a 100%);
-  top: 170px;
-  left: 100px;
+  top: 300px;
+  left: 500px;
   animation-delay: 0.5s;
 }
 
 .gift-3 .gift-box {
   background: linear-gradient(135deg, #ffe66d 0%, #fff89c 50%, #ffc107 100%);
-  top: 120px;
-  left: -70px;
+  top: 250px;
+  left: 200px;
   animation-delay: 1s;
 }
 
 .gift-4 .gift-box {
   background: linear-gradient(135deg, #a8e6cf 0%, #c4f4e0 50%, #66bb6a 100%);
-  top: 70px;
-  left: 80px;
+  top: 200px;
+  left: 450px;
   animation-delay: 1.5s;
 }
 
 .gift-5 .gift-box {
   background: linear-gradient(135deg, #ffb6c1 0%, #ffc0cb 50%, #f48fb1 100%);
-  top: 100px;
-  left: -50px;
+  top: 150px;
+  left: 300px;
   animation-delay: 2s;
 }
 
@@ -313,12 +352,13 @@ body {
 .sock {
   position: absolute;
   cursor: pointer;
-  z-index: 5;
-  top: 450px;
-  right: 50px;
+  z-index: 10;
+  top: 500px;
+  left: 600px;
   transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   animation: sock-swing 2.5s ease-in-out infinite;
   filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.4));
+  pointer-events: auto;
 }
 
 .sock:hover {
