@@ -9,7 +9,9 @@
 
 let JSONBIN_CONFIG = {
   BIN_ID: localStorage.getItem("jsonbin_bin_id") || "69403be243b1c97be9f03720",
-  API_KEY: localStorage.getItem("jsonbin_api_key") || "$2a$10$bo9OkFHFUuaFDqm/xyXFguOnmX6k/ExP3nyZXtcBcMfgdV9wJ1/Jq",
+  API_KEY:
+    localStorage.getItem("jsonbin_api_key") ||
+    "$2a$10$bo9OkFHFUuaFDqm/xyXFguOnmX6k/ExP3nyZXtcBcMfgdV9wJ1/Jq",
 };
 
 // Function để lưu cấu hình JSONBin
@@ -107,6 +109,116 @@ function displayGiftsList() {
   });
 }
 
+// Lưu món quà được chọn vào API
+async function saveSelectedGift(gift) {
+  if (!hasJSONBinConfig()) {
+    alert("⚠️ Vui lòng cấu hình JSONBin.io trước khi chọn quà!");
+    closeModal("gift-modal");
+    setTimeout(() => {
+      showJSONBinConfigModal();
+    }, 300);
+    return;
+  }
+
+  try {
+    // Lấy dữ liệu hiện tại từ JSONBin
+    const getResponse = await fetch(
+      `https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.BIN_ID}`,
+      {
+        headers: {
+          "X-Master-Key": JSONBIN_CONFIG.API_KEY,
+        },
+      }
+    );
+
+    let currentData = {
+      selectedGifts: [],
+      lastUpdated: new Date().toISOString(),
+    };
+
+    if (getResponse.ok) {
+      const getData = await getResponse.json();
+      currentData = getData.record || currentData;
+    }
+
+    // Thêm món quà mới được chọn
+    const selectedGift = {
+      id: Date.now(),
+      giftId: gift.id,
+      giftName: gift.name,
+      giftImage: gift.image,
+      giftDescription: gift.description,
+      selectedAt: new Date().toISOString(),
+      timestamp: new Date().toLocaleString("vi-VN"),
+    };
+
+    if (!currentData.selectedGifts) {
+      currentData.selectedGifts = [];
+    }
+    currentData.selectedGifts.push(selectedGift);
+    currentData.lastUpdated = new Date().toISOString();
+
+    // Gửi lên JSONBin
+    const putResponse = await fetch(
+      `https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.BIN_ID}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Master-Key": JSONBIN_CONFIG.API_KEY,
+        },
+        body: JSON.stringify(currentData),
+      }
+    );
+
+    if (putResponse.ok) {
+      const data = await putResponse.json();
+      const viewUrl = `https://jsonbin.io/v3/b/${JSONBIN_CONFIG.BIN_ID}`;
+
+      // Hiển thị thông báo thành công trong modal
+      const modalBody = document.getElementById("modal-body");
+      const successMessage = document.createElement("div");
+      successMessage.id = "gift-selection-result";
+      successMessage.className = "wish-result show success";
+      successMessage.innerHTML = `
+        <h3 style="color: #4CAF50; margin-bottom: 10px;">✅ Đã chọn quà thành công!</h3>
+        <p>🎁 Bạn đã chọn: <strong>${gift.name}</strong></p>
+        <p style="margin-top: 10px; font-size: 0.9rem; color: #4CAF50;">☁️ Đã lưu lên server JSONBin.io</p>
+        <p style="margin-top: 5px; font-size: 0.8rem;">
+          <a href="${viewUrl}" target="_blank" style="color: #4ECDC4; text-decoration: underline;">🔗 Xem dữ liệu tại đây</a>
+        </p>
+      `;
+      modalBody.appendChild(successMessage);
+
+      console.log("✅ Món quà đã được lưu:", {
+        gift: selectedGift,
+        jsonbinResponse: data,
+        viewUrl: viewUrl,
+      });
+
+      // Tự động đóng modal sau 3 giây
+      setTimeout(() => {
+        closeModal("gift-modal");
+      }, 3000);
+    } else {
+      throw new Error("Không thể lưu lên server");
+    }
+  } catch (error) {
+    console.error("Lỗi khi lưu món quà:", error);
+
+    const modalBody = document.getElementById("modal-body");
+    const errorMessage = document.createElement("div");
+    errorMessage.id = "gift-selection-result";
+    errorMessage.className = "wish-result show error";
+    errorMessage.innerHTML = `
+      <h3 style="color: #f44336; margin-bottom: 10px;">❌ Lỗi khi lưu</h3>
+      <p>Không thể lưu món quà lên server.</p>
+      <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.8;">Lỗi: ${error.message}</p>
+    `;
+    modalBody.appendChild(errorMessage);
+  }
+}
+
 // Hiển thị modal thông tin quà
 function showGiftModal(gift) {
   const modal = document.getElementById("gift-modal");
@@ -118,10 +230,24 @@ function showGiftModal(gift) {
             <img src="${gift.image}" alt="${gift.name}">
             <p style="font-size: 1.2rem; margin-top: 20px;">${gift.description}</p>
             <p style="margin-top: 15px; color: #FFD700; font-size: 1.5rem;">🎁 Chúc bạn nhận được món quà này! 🎁</p>
+            <div style="margin-top: 30px;">
+              <button class="select-gift-btn" id="select-gift-btn" data-gift-id="${gift.id}">
+                🎯 Chọn Quà Này
+              </button>
+            </div>
+            <div id="gift-selection-result"></div>
         </div>
     `;
 
   modal.classList.add("show");
+
+  // Thêm event listener cho button chọn quà
+  const selectBtn = document.getElementById("select-gift-btn");
+  if (selectBtn) {
+    selectBtn.addEventListener("click", () => {
+      saveSelectedGift(gift);
+    });
+  }
 }
 
 // Đóng modal
