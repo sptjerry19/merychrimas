@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🎄 Trang Web Giáng Sinh Noel 🎄</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="snow-container">
+      <!-- Tuyết rơi sẽ được tạo bằng JavaScript -->
+    </div>
+
+    <div class="container">
+      <h1 class="title">🎄 Chúc Mừng Giáng Sinh 🎄</h1>
+
+      <!-- Cây thông Noel -->
+      <div class="tree-container">
+        <div class="tree">
+          <!-- Tầng 1 -->
+          <div class="tree-layer layer-1"></div>
+          <!-- Tầng 2 -->
+          <div class="tree-layer layer-2"></div>
+          <!-- Tầng 3 -->
+          <div class="tree-layer layer-3"></div>
+          <!-- Tầng 4 -->
+          <div class="tree-layer layer-4"></div>
+
+          <!-- Ngôi sao trên đỉnh -->
+          <div class="star">⭐</div>
+
+          <!-- Thân cây -->
+          <div class="trunk"></div>
+        </div>
+
+        <!-- Các hộp quà trên cây -->
+        <div class="gift gift-1" data-gift="1">
+          <div class="gift-box">
+            <div class="gift-ribbon"></div>
+          </div>
+        </div>
+        <div class="gift gift-2" data-gift="2">
+          <div class="gift-box">
+            <div class="gift-ribbon"></div>
+          </div>
+        </div>
+        <div class="gift gift-3" data-gift="3">
+          <div class="gift-box">
+            <div class="gift-ribbon"></div>
+          </div>
+        </div>
+        <div class="gift gift-4" data-gift="4">
+          <div class="gift-box">
+            <div class="gift-ribbon"></div>
+          </div>
+        </div>
+        <div class="gift gift-5" data-gift="5">
+          <div class="gift-box">
+            <div class="gift-ribbon"></div>
+          </div>
+        </div>
+
+        <!-- Cái tất đặc biệt -->
+        <div class="sock" id="special-sock">
+          <div class="sock-body">🧦</div>
+        </div>
+      </div>
+
+      <!-- Danh sách hộp quà -->
+      <div class="gifts-list">
+        <h2>🎁 Danh Sách Quà Tặng</h2>
+        <div class="gifts-grid" id="gifts-grid">
+          <!-- Sẽ được tạo bằng JavaScript -->
+        </div>
+      </div>
+
+      <!-- Danh sách điều ước đã nhập -->
+      <div class="wishes-list" id="wishes-list">
+        <div class="wishes-header">
+          <h2>📝 Danh Sách Điều Ước Đã Nhập</h2>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap">
+            <button class="view-wishes-btn" id="view-wishes-btn">
+              👁️ Xem Điều Ước
+            </button>
+            <button
+              class="view-wishes-btn"
+              id="jsonbin-config-btn"
+              style="background: linear-gradient(135deg, #4ecdc4, #6eddd6)"
+            >
+              ⚙️ Cấu Hình JSONBin
+            </button>
+          </div>
+        </div>
+        <div class="wishes-content" id="wishes-content" style="display: none">
+          <div class="wishes-grid" id="wishes-grid">
+          </div>
+          <button class="clear-wishes-btn" id="clear-wishes-btn">
+            🗑️ Xóa Tất Cả
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal hiển thị thông tin quà -->
+    <div class="modal" id="gift-modal">
+      <div class="modal-content">
+        <span class="close" id="close-modal">&times;</span>
+        <div class="modal-body" id="modal-body">
+          <!-- Nội dung sẽ được thêm bằng JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal cấu hình JSONBin.io -->
+    <div class="modal" id="jsonbin-config-modal">
+      <div class="modal-content">
+        <span class="close" id="close-jsonbin-modal">&times;</span>
+        <div class="modal-body">
+          <h2>⚙️ Cấu Hình JSONBin.io</h2>
+          <p
+            style="
+              margin-bottom: 20px;
+              font-size: 0.9rem;
+              color: rgba(255, 255, 255, 0.8);
+            "
+          >
+            Để lưu dữ liệu lên server, vui lòng nhập thông tin từ JSONBin.io
+          </p>
+          <div
+            style="
+              margin-bottom: 15px;
+              padding: 10px;
+              background: rgba(76, 175, 80, 0.1);
+              border: 1px solid #4caf50;
+              border-radius: 8px;
+            "
+          >
+            <p style="font-size: 0.85rem; color: #4caf50; margin-bottom: 5px">
+              <strong>📝 Hướng dẫn:</strong>
+            </p>
+            <ol
+              style="
+                font-size: 0.8rem;
+                color: rgba(255, 255, 255, 0.8);
+                margin-left: 20px;
+                padding-left: 0;
+              "
+            >
+              <li>
+                Truy cập
+                <a
+                  href="https://jsonbin.io"
+                  target="_blank"
+                  style="color: #4ecdc4"
+                  >jsonbin.io</a
+                >
+                và đăng ký tài khoản
+              </li>
+              <li>Tạo bin mới</li>
+              <li>Copy Bin ID và API Key</li>
+              <li>Điền vào form bên dưới</li>
+            </ol>
+          </div>
+          <form id="jsonbin-config-form">
+            <div class="form-group">
+              <label for="jsonbin-bin-id">Bin ID:</label>
+              <input
+                type="text"
+                id="jsonbin-bin-id"
+                placeholder="Ví dụ: 65a1b2c3d4e5f6g7h8i9j0k"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="jsonbin-api-key">API Key (Master Key):</label>
+              <input
+                type="text"
+                id="jsonbin-api-key"
+                placeholder="Ví dụ: $2b$10$..."
+                required
+              />
+            </div>
+            <button type="submit" class="submit-btn">💾 Lưu Cấu Hình</button>
+          </form>
+          <div id="jsonbin-config-result" class="wish-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal nhập món quà yêu thích -->
+    <div class="modal" id="wish-modal">
+      <div class="modal-content">
+        <span class="close" id="close-wish-modal">&times;</span>
+        <div class="modal-body">
+          <h2>🎅 Nhập Món Quà Yêu Thích Của Bạn</h2>
+          <form id="wish-form">
+            <div class="form-group">
+              <label for="wish-input">Món quà bạn muốn nhận:</label>
+              <input
+                type="text"
+                id="wish-input"
+                placeholder="Ví dụ: iPhone 15, Laptop, Xe hơi..."
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="name-input">Tên của bạn:</label>
+              <input
+                type="text"
+                id="name-input"
+                placeholder="Nhập tên của bạn..."
+                required
+              />
+            </div>
+            <button type="submit" class="submit-btn">Gửi Điều Ước 🎁</button>
+          </form>
+          <div id="wish-result" class="wish-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
