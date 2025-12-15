@@ -8,8 +8,8 @@
 // 4. Điền vào dưới đây hoặc để trống để nhập qua form
 
 let JSONBIN_CONFIG = {
-  BIN_ID: localStorage.getItem("jsonbin_bin_id") || "",
-  API_KEY: localStorage.getItem("jsonbin_api_key") || "",
+  BIN_ID: localStorage.getItem("jsonbin_bin_id") || "69403be243b1c97be9f03720",
+  API_KEY: localStorage.getItem("jsonbin_api_key") || "$2a$10$bo9OkFHFUuaFDqm/xyXFguOnmX6k/ExP3nyZXtcBcMfgdV9wJ1/Jq",
 };
 
 // Function để lưu cấu hình JSONBin
